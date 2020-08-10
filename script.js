@@ -1,7 +1,6 @@
 //onmousemove = function(e){document.getElementById('text').innerHTML = `${e.clientX} x ${e.clientY}`}
 //tracks mouse pos
-
-//console.log(`${window.innerWidth/2} x ${window.innerHeight}`);
+let diff = document.title;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -12,34 +11,59 @@ canvas.height = window.innerHeight -= window.innerHeight * 0.13;
 const centerW = canvas.width / 2;
 const centerH = canvas.height / 2;
 
-let circle = {
-    x: 40,
-    y: 40,
-    s: 15,
-    xSpeed: 5,
-    ySpeed: 5
+let numberOfCircles;
+let size;
+let xSpeed;
+let ySpeed;
+let circleList = [];
+
+if (diff == 'Easy') {
+    numberOfCircles = 1;
+    size = 15;
+    xSpeed = 8;
+    ySpeed = 4;
+    for (let i = 0; i < numberOfCircles; i++) {
+        circleList[i] = {
+            x: centerW,
+            y: centerH,
+            dx: xSpeed,
+            dy: ySpeed
+        }
+        console.log(`made circle ${i}`);
+    }
+    drawCircles();
+} else if ( diff == 'Medium') {
+
+} else {
+
 }
 
-function drawCircle() {
+function drawCircles() {
     ctx.beginPath();
-    ctx.arc(circle.x, circle.y, circle.s, 0, Math.PI * 2);
-    ctx.fillStyle = 'red';
+    for (let i = 0; i < circleList.length; i++) {
+        ctx.arc(circleList[i].x, circleList[i].y, size, 0, Math.PI * 2);
+    }
+    ctx.fillStyle = 'white';
     ctx.fill();
 }
 
 function update() {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    drawCircle();
-    circle.x += circle.xSpeed;
-    circle.y += circle.ySpeed;
 
-    if (circle.x + circle.s > canvas.width || circle.x - circle.s < 0) {
-        circle.xSpeed *= -1;
+    for (let i = 0; i < circleList.length; i++) {
+        circleList[i].x += circleList[i].dx;
+        circleList[i].y += circleList[i].dy;
+
+        if (circleList[i].x + size > canvas.width || circleList[i].x - size < 0) {
+            circleList[i].dx *= -1;
+        }
+
+        if (circleList[i].y + size > canvas.height || circleList[i].y - size < 0) {
+            circleList[i].dy *= -1;
+        }
     }
 
-    if (circle.y + circle.s > canvas.height || circle.y - circle.s < 0) {
-        circle.ySpeed *= -1;
-    }
+    drawCircles();
 
     requestAnimationFrame(update);
 }
