@@ -53,7 +53,8 @@ function getRand(min, max) {
 
 function incrementScore() {
     if (playing) {
-        console.log('playing');
+        score++;
+        document.getElementById('score').innerHTML = `Score : ${score}`
     }
 }
 
