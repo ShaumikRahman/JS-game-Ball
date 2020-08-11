@@ -8,8 +8,8 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth -= window.innerWidth * 0.01;
 canvas.height = window.innerHeight -= window.innerHeight * 0.13;
 
-const centerW = canvas.width / 2;
-const centerH = canvas.height / 2;
+//const centerW = canvas.width / 2;
+//const centerH = canvas.height / 2;
 
 let numberOfCircles;
 let size;
@@ -22,30 +22,32 @@ function getRand(min, max) {
   }
 
 if (diff == 'Easy') {
-    numberOfCircles = 3;
+    numberOfCircles = 15;
     size = 15;
     xSpeed = 8;
     ySpeed = 4;
     for (let i = 0; i < numberOfCircles; i++) {
         circleList[i] = {
-            x: centerW,
-            y: centerH,
+            x: size+1,
+            y: size+1,
             dx: xSpeed * getRand(0.75,1.25),
             dy: ySpeed * getRand(0.75,1.25)
         }
         console.log(`made circle ${i}`);
     }
-    drawCircles();
 } else if ( diff == 'Medium') {
 
 } else {
 
 }
 
+console.log(circleList.length);
+
 function drawCircles() {
     ctx.beginPath();
     for (let i = 0; i < circleList.length; i++) {
         ctx.arc(circleList[i].x, circleList[i].y, size, 0, Math.PI * 2);
+        ctx.moveTo(0,0);
     }
     ctx.fillStyle = 'white';
     ctx.fill();
