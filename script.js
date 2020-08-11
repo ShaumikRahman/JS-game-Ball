@@ -17,8 +17,12 @@ let xSpeed;
 let ySpeed;
 let circleList = [];
 
+function getRand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
 if (diff == 'Easy') {
-    numberOfCircles = 1;
+    numberOfCircles = 3;
     size = 15;
     xSpeed = 8;
     ySpeed = 4;
@@ -26,8 +30,8 @@ if (diff == 'Easy') {
         circleList[i] = {
             x: centerW,
             y: centerH,
-            dx: xSpeed,
-            dy: ySpeed
+            dx: xSpeed * getRand(0.75,1.25),
+            dy: ySpeed * getRand(0.75,1.25)
         }
         console.log(`made circle ${i}`);
     }
