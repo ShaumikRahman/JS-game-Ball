@@ -15,18 +15,15 @@ let score = 0;
 let inGame = false;
 let lost = false;
 let numberOfCircles;
-let size;
-let xSpeed;
-let ySpeed;
+let size = 15;
+let xSpeed = 8;
+let ySpeed = 4;
 let mousePosX;
 let mousePosY;
 let circleList = [];
 
 if (diff == 'Easy') {
-    numberOfCircles = 1;
-    size = 15;
-    xSpeed = 8;
-    ySpeed = 4;
+    numberOfCircles = 12;
     for (let i = 0; i < numberOfCircles; i++) {
         circleList[i] = {
             x: size+1,
@@ -36,9 +33,25 @@ if (diff == 'Easy') {
         }
     }
 } else if ( diff == 'Medium') {
-
+    numberOfCircles = 25;
+    for (let i = 0; i < numberOfCircles; i++) {
+        circleList[i] = {
+            x: size+1,
+            y: size+1,
+            dx: xSpeed * getRand(0.75,1.25),
+            dy: ySpeed * getRand(0.75,1.25)
+        }
+    }
 } else {
-
+    numberOfCircles = 100;
+    for (let i = 0; i < numberOfCircles; i++) {
+        circleList[i] = {
+            x: size+1,
+            y: size+1,
+            dx: xSpeed * getRand(0.75,1.25),
+            dy: ySpeed * getRand(0.75,1.25)
+        }
+    }
 }
 
 document.getElementById('restart').hidden = true;
