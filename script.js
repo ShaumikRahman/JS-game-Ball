@@ -11,15 +11,13 @@ canvas.height = window.innerHeight -= window.innerHeight * 0.13;
 //const centerW = canvas.width / 2;
 //const centerH = canvas.height / 2;
 
+let score = 0;
+let playing = false;
 let numberOfCircles;
 let size;
 let xSpeed;
 let ySpeed;
 let circleList = [];
-
-function getRand(min, max) {
-    return Math.random() * (max - min) + min;
-  }
 
 if (diff == 'Easy') {
     numberOfCircles = 15;
@@ -41,7 +39,23 @@ if (diff == 'Easy') {
 
 }
 
-console.log(circleList.length);
+document.getElementById('canvas').addEventListener('mouseenter', function () {
+    playing = true;
+});
+
+document.getElementById('canvas').addEventListener('mouseleave', function () {
+    playing = false;
+});
+
+function getRand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+function incrementScore() {
+    if (playing) {
+        console.log('playing');
+    }
+}
 
 function drawCircles() {
     ctx.beginPath();
@@ -62,10 +76,12 @@ function update() {
 
         if (circleList[i].x + size > canvas.width || circleList[i].x - size < 0) {
             circleList[i].dx *= -1;
+            incrementScore();
         }
 
         if (circleList[i].y + size > canvas.height || circleList[i].y - size < 0) {
             circleList[i].dy *= -1;
+            incrementScore();
         }
     }
 
