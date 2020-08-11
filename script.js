@@ -12,15 +12,18 @@ canvas.height = window.innerHeight -= window.innerHeight * 0.13;
 //const centerH = canvas.height / 2;
 
 let score = 0;
-let playing = false;
+let inGame = false;
+let lost = false;
 let numberOfCircles;
 let size;
 let xSpeed;
 let ySpeed;
+let mousePosX;
+let mousePosY;
 let circleList = [];
 
 if (diff == 'Easy') {
-    numberOfCircles = 15;
+    numberOfCircles = 1;
     size = 15;
     xSpeed = 8;
     ySpeed = 4;
@@ -31,7 +34,6 @@ if (diff == 'Easy') {
             dx: xSpeed * getRand(0.75,1.25),
             dy: ySpeed * getRand(0.75,1.25)
         }
-        console.log(`made circle ${i}`);
     }
 } else if ( diff == 'Medium') {
 
@@ -39,12 +41,18 @@ if (diff == 'Easy') {
 
 }
 
+document.getElementById('restart').hidden = true;
+
+document.getElementById('restart').addEventListener('click', (e) => {
+    location.reload();
+});
+
 document.getElementById('canvas').addEventListener('mouseenter', function () {
-    playing = true;
+    inGame = true;
 });
 
 document.getElementById('canvas').addEventListener('mouseleave', function () {
-    playing = false;
+    inGame = false;
 });
 
 function getRand(min, max) {
@@ -52,7 +60,7 @@ function getRand(min, max) {
   }
 
 function incrementScore() {
-    if (playing) {
+    if (inGame) {
         score++;
         document.getElementById('score').innerHTML = `Score : ${score}`
     }
@@ -68,26 +76,49 @@ function drawCircles() {
     ctx.fill();
 }
 
+function endGame() {
+    lost = true;
+    document.getElementById('restart').hidden = false;
+}
+
 function update() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    for (let i = 0; i < circleList.length; i++) {
-        circleList[i].x += circleList[i].dx;
-        circleList[i].y += circleList[i].dy;
+    if (lost == false) {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        if (circleList[i].x + size > canvas.width || circleList[i].x - size < 0) {
-            circleList[i].dx *= -1;
-            incrementScore();
+        for (let i = 0; i < circleList.length; i++) {
+            
+            circleList[i].x += circleList[i].dx;
+            circleList[i].y += circleList[i].dy;
+
+            onmousemove = function (e) {
+                mousePosX = e.clientX;
+                mousePosY = e.clientY - document.getElementById('nav').clientHeight;
+            }
+
+            if (circleList[i].x + size > mousePosX && 
+                circleList[i].x - size < mousePosX &&
+                circleList[i].y + size > mousePosY &&
+                circleList[i].y - size < mousePosY) {
+                endGame();
+            }
+
+            if (circleList[i].x + size > canvas.width || circleList[i].x - size < 0) {
+                circleList[i].dx *= -1;
+                incrementScore();
+            }
+
+            if (circleList[i].y + size > canvas.height || circleList[i].y - size < 0) {
+                circleList[i].dy *= -1;
+                incrementScore();
+            }
         }
 
-        if (circleList[i].y + size > canvas.height || circleList[i].y - size < 0) {
-            circleList[i].dy *= -1;
-            incrementScore();
-        }
+        drawCircles();
+
+        requestAnimationFrame(update);
     }
 
-    drawCircles();
-
-    requestAnimationFrame(update);
+    
 }
 update();
